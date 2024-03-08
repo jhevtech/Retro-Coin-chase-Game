@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Race</title>
+</head>
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+
+    body{
+        background:url(images/background2.jpg) no-repeat center;
+        background-size: cover;
+        height: 100vh;
+        display: grid;
+        place-items: center;
+    }
+
+    #road{
+        background:url(images/road2.png) no-repeat center;
+        height: 95vh;
+        width: 50vw;
+        position: relative;
+        top: -25vh; 
+        z-index: -9;
+    }
+
+    #start{
+        position: absolute;
+        top: 60vh;
+        left: 47vw;
+        z-index: 100;
+        font-size: 2rem;
+        background-color: rgb(99, 68, 209);
+        color: white;
+        padding: 5px;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    #coins{
+        position: absolute;
+        top: 5px;
+        left: 10px;
+        font-size: 2rem;
+        padding: 5px;
+        background-color: white;
+    }
+
+    #obstacle1{
+        /*display:grid;
+        place-items: center;*/
+        position: relative;
+        width: 100px;
+        height: 100px;
+        left: 100px;
+        
+        z-index: 1001;
+       /* animation: obstacle1 infinite linear 6s;*/
+    }
+
+    #obstacle2{
+        /*display:grid;
+        place-items: center;*/
+        position: relative;
+        width: 100px;
+        height: 100px;
+        left: 75px;
+        z-index: 1001;
+       /* animation: obstacle2 infinite linear 6s;*/
+    }
+
+    #obstacle3{
+        /*display:grid;
+        place-items: center;*/
+        position: relative;
+        width: 100px;
+        height: 100px;
+        left: -35px;
+        z-index: 1001;
+       /* animation: obstacle3 infinite linear 6s;*/
+    }
+
+    #obstacle4{
+        /*display:grid;
+        place-items: center;*/
+        position: relative;
+        width: 100px;
+        height: 100px;
+        left: -20px;
+        z-index: 1001;
+        /*animation: obstacle4 infinite linear 6s;*/
+    }
+
+    .coinimg{
+        width:80px
+    }
+    .obstacleimg{
+        width: 80px;
+    }
+    .mycarimg{
+        width: 200px;
+    }
+
+    #mycar{
+        width: 85px;
+        height:100px;
+        position: relative;
+        top: 15vh;
+    }
+
+</style>
+
+<body>
+    
+    <div id="coins">Coins : 0</div>
+    <button id="start">Start</button>
+    
+    <div>
+        
+        <div id="coin"><img id="coinimg" class="coinimg" src="images/coin4.png" alt=""></div>
+        
+        <div id="apple"><img id="obstacle1" class="obstacleimg" src="images/apple.png" alt=""></div>
+        <div id="banana"><img id="obstacle2" class="obstacleimg" src="images/banana.png" alt=""></div>
+        <div id="cat"><img id="obstacle3" class="obstacleimg" src="images/cat.png" alt=""></div>
+        <div id="dog"><img id="obstacle4" class="obstacleimg" src="images/dog.png" alt=""></div>
+    </div>
+    
+    <div id="mycar"><img id="mycarimg" class="mycarimg" src="images/car3.png" alt= ""> </div>
+    <div id="road"></div>
+
+    <script>
+        let t=15; // t is top
+        let l=0; // l is left
+        window.addEventListener("keydown",function(x){
+            if(x.keyCode==87){
+                t=t-3;
+            }
+            if(x.keyCode==65){
+                l=l-1;
+            }
+            if(x.keyCode==83){
+                t=t+3;
+            }
+            if(x.keyCode==68){
+                l=l+1;
+            }
+            document.getElementById("mycar").style.top=`${t}vh`;
+            document.getElementById("mycar").style.left=`${l}vw`;
+        });
+
+        document.getElementById("start").addEventListener("click", function(){
+            document.getElementById("start").style.display="none";
+            document.getElementById("road").style.animation="roadanimation 20s linear infinite";
+
+            setInterval(()=>{
+                const obstacles = document.querySelectorAll(".obstacleimg");
+                obstacles.forEach((obstacle) => {
+                    const currentTop = parseInt(obstacle.style.top) || 0;
+                    obstacle.style.top = `${currentTop + 3}vh`;
+                    if (currentTop >= 95) {
+                        obstacle.style.top = "-5vh";
+                        obstacle.style.left = `${Math.floor(Math.random() * (900 - 300 + 1) + 300)}px`;
+                    }
+                });
+            }, 100);
+
+            setInterval(()=>{
+                const coin = document.getElementById("coinimg");
+                const currentTop = parseInt(coin.style.top) || 0;
+                coin.style.top = `${currentTop + 3}vh`;
+                if (currentTop >= 95) {
+                    coin.style.top = "-5vh";
+                    coin.style.left = `${Math.floor(Math.random() * (900 - 300 + 1) + 300)}px`;
+                }
+            }, 100);
+
+            let coins = 0;
+            setInterval(()=>{
+                const carRect = document.getElementById("mycar").getBoundingClientRect();
+                const mycar_left = carRect.left;
+                const mycar_right = carRect.right;
+                const mycar_top = carRect.top;
+                const mycar_bottom = carRect.bottom;
+
+                const coinRect = document.getElementById("coin").getBoundingClientRect();
+                const coin_left = coinRect.left;
+                const coin_right = coinRect.right;
+                const coin_top = coinRect.top;
+                const coin_bottom = coinRect.bottom;
+
+                if (mycar_left < coin_right && mycar_right > coin_left && mycar_top < coin_bottom && mycar_bottom > coin_top) {
+                    coins += 1;
+                    document.getElementById("coins").innerText = `Coins : ${coins}`;
+                }
+                
+            }, 100);
+        });
+    </script>
+</body>
+</html>
+
+//need to fix the collision with obstacles

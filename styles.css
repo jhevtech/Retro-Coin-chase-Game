@@ -1,0 +1,33 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: rgb(236, 221, 221);
+    position: relative;
+}
+
+#timer {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #000;
+    color: #fff;
+    padding: 10px;
+    font-family: 'Common Pixel', sans-serif;
+    font-size: 16px;
+    border: 1px solid #fff;
+    white-space: nowrap;
+    box-sizing: border-box;
+    min-width: 150px;
+    text-align: center;
+    font-style : normal;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    border: 1px solid #fff;
+    box-shadow: 21px 21px 10px -17px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 30px 21px 10px -17px rgba(0,0,0,0.75);
+    -moz-box-shadow: 30px 21px 10px -17px rgba(0,0,0,0.75);
+}
+
